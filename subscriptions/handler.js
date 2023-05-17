@@ -87,9 +87,9 @@ const seeSubscriptions = async function (interaction) {
   })
 
   if (subscribedAddresses.length === 0) {
-    await interaction.reply('You are not subscribed to any addresses.')
+    await interaction.reply({ content: 'You are not subscribed to any addresses.', ephemeral: true })
   } else {
-    await interaction.reply(`You are subscribed to the following addresses: ${subscribedAddresses.join(', ')}`)
+    await interaction.reply({ content: `You are subscribed to the following addresses: ${subscribedAddresses.join(', ')}`, ephemeral: true })
   }
 }
 
