@@ -58,7 +58,6 @@ client.on(Events.InteractionCreate, async interaction => {
   if (
     !interaction.isChatInputCommand()
   ) {
-    console.log('ahhhh')
     return
   }
 
@@ -165,6 +164,9 @@ server.on('request', (req, res) => {
   }
 })
 
-server.listen(25565, () => {
-  console.log('Server listening on port 25565')
+// Service Port to receive events
+const servicePort = process.env.SERVICE_PORT
+
+server.listen(servicePort, () => {
+  console.log(`Server listening on port ${servicePort}`)
 })
