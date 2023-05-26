@@ -1,13 +1,15 @@
 {
   "dependencies": {
+    "canvas": "^2.11.2",
     "crypto-js": "^4.1.1",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
+    "ethereum-blockies": "^0.1.1",
     "web3": "^1.10.0",
     "ws": "^8.13.0"
   },
   "devDependencies": {
-    "eslint": "^8.40.0",
+    "eslint": "^8.41.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",

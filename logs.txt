@@ -1,3 +1,0 @@
-Server listening on port 25565
-Ready! Logged in as EVM Notifications#9531
-incoming POST request
