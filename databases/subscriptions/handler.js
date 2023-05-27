@@ -1,4 +1,4 @@
-const fs = require('node:fs')
+const fs = require('fs')
 const { isAddress } = require('../utils')
 
 // Load the subscriptions from the JSON file

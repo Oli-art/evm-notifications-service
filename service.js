@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable brace-style */
-const fs = require('node:fs')
-const path = require('node:path')
+const fs = require('fs')
+const path = require('path')
 const http = require('http')
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 const manageRequest = require('./event-handler/transaction-manager')
