@@ -10,5 +10,6 @@ module.exports = {
         .setDescription('The address to unsubscribe to')),
   async execute (interaction) {
     await handler.unsubscribe(interaction)
+    console.log(`userId: ${interaction.user.id} has unubscribed from: ${interaction.options.getString('address')}`)
   }
 }

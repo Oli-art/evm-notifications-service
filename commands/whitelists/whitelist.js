@@ -9,7 +9,7 @@ module.exports = {
       option.setName('address')
         .setDescription('The address to whitelist')),
   async execute (interaction) {
-    console.log(`userId: ${interaction.user.id} has whitelisted: ${interaction.options.getString('address')}`)
     await handler.whitelist(interaction)
+    console.log(`userId: ${interaction.user.id} has whitelisted: ${interaction.options.getString('address')}`)
   }
 }

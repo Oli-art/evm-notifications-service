@@ -9,7 +9,7 @@ module.exports = {
       option.setName('address')
         .setDescription('The address to subscribe to')),
   async execute (interaction) {
-    console.log(`userId: ${interaction.user.id} has subscribed to: ${interaction.options.getString('address')}`)
     await handler.subscribe(interaction)
+    console.log(`userId: ${interaction.user.id} has subscribed to: ${interaction.options.getString('address')}`)
   }
 }

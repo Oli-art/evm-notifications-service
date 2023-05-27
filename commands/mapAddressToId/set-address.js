@@ -9,7 +9,7 @@ module.exports = {
       option.setName('address')
         .setDescription('Your address')),
   async execute (interaction) {
-    console.log(`userId: ${interaction.user.id} has set up his address as: ${interaction.options.getString('address')}`)
     await handler.setAddress(interaction)
+    console.log(`userId: ${interaction.user.id} has set up his address as: ${interaction.options.getString('address')}`)
   }
 }

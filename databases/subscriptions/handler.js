@@ -30,7 +30,7 @@ const saveSubscriptions = function (subscriptions) {
 
 // Handle the 'subscribe' command
 const subscribe = function (interaction) {
-  const address = interaction.options.getString('address')
+  const address = interaction.options.getString('address').toLowerCase()
   if (!isAddress(address)) {
     interaction.reply({ content: 'Please provide a valid address to subscribe to.', ephemeral: true })
     return
@@ -56,7 +56,7 @@ const subscribe = function (interaction) {
 
 // Handle the 'unsubscribe' command
 const unsubscribe = async function (interaction) {
-  const address = interaction.options.getString('address')
+  const address = interaction.options.getString('address').toLowerCase()
   if (!isAddress(address)) {
     interaction.reply({ content: 'Please provide a valid address to unsubscribe from.', ephemeral: true })
     return
@@ -74,7 +74,7 @@ const unsubscribe = async function (interaction) {
   saveSubscriptions(subscriptions)
   console.log(`${interaction.user.id} unsubscribed from ${address}`)
 
-  await interaction.reply(`Unsubscribed from the '${address}' address.`)
+  await interaction.reply({ content: `Unsubscribed from the '${address}' address.`, ephemeral: true })
 }
 
 // Handle the 'seeSubscriptions' command
@@ -94,30 +94,4 @@ const seeSubscriptions = async function (interaction) {
   }
 }
 
-// Handle the 'subscribe' command
-const whitelist = function (interaction) {
-  const address = interaction.options.getString('address')
-  if (!isAddress(address)) {
-    interaction.reply({ content: 'Please provide a valid address to whitelist.', ephemeral: true })
-    return
-  }
-
-  // Add the user to the subscription list for the provided address
-  const subscriptions = loadSubscriptions()
-  let users = subscriptions.get(address)
-
-  if (!users) {
-    users = new Set([interaction.user.id])
-  } else {
-    users.add(interaction.user.id)
-  }
-  subscriptions.set(address, users)
-
-  // Save the updated subscriptions
-  saveSubscriptions(subscriptions)
-  console.log(`${interaction.user.id} subscribed to ${address}`)
-
-  interaction.reply({ content: `Subscribed to the '${address}' address.`, ephemeral: true })
-}
-
-module.exports = { subscribe, unsubscribe, seeSubscriptions, loadSubscriptions, whitelist }
+module.exports = { subscribe, unsubscribe, seeSubscriptions, loadSubscriptions }

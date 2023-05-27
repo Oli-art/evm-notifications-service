@@ -14,7 +14,6 @@ module.exports = async function directMessage (
     receiver
   ) {
     const mapAddressToId = mapAddressToIdHandler.loadMapAddressToId()
-    const whitelists = whitelistHandler.loadWhitelists()
   
     // Iterate trough all receivers to see if someone has set it up as his.
     if (!mapAddressToId.has(receiver)) {
@@ -22,8 +21,11 @@ module.exports = async function directMessage (
     }
   
     await mapAddressToId.get(receiver).forEach(async (userId) => {
+      const userWhitelist = whitelistHandler.getWhitelist(userId)
       // check if user has whitelisted the sender
-      if (whitelists.get(receiver).includes(sender)) {
+      console.log(userWhitelist)
+      console.log(sender.toLowerCase(), userWhitelist.length == 0)
+      if (userWhitelist.includes(sender.toLowerCase()) || userWhitelist.length == 0 ) {
         await discordClient.users
         .fetch(userId) // Fetch the user object using the user ID
         .then(async (user) => {

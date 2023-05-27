@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { REST, Routes } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
@@ -30,7 +29,7 @@ for (const folder of commandFolders) {
 }
 
 // Construct and prepare an instance of the REST module
-const rest = new REST().setToken(token)
+const rest = new REST().setToken(token);
 
 // and deploy your commands!
 (async () => {

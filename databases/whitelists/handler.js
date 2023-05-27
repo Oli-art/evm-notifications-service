@@ -30,7 +30,7 @@ const saveWhitelists = function (whitelists) {
 
 // Handle the 'whitelist' command
 const whitelist = function (interaction) {
-  const address = interaction.options.getString('address')
+  const address = interaction.options.getString('address').toLowerCase()
   if (!isAddress(address)) {
     interaction.reply({ content: 'Please provide a valid address to whitelist.', ephemeral: true })
     return
@@ -56,7 +56,7 @@ const whitelist = function (interaction) {
 
 // Handle the 'unwhitelist' command
 const unwhitelist = async function (interaction) {
-  const address = interaction.options.getString('address')
+  const address = interaction.options.getString('address').toLowerCase()
   if (!isAddress(address)) {
     interaction.reply({ content: 'Please provide a valid address to unwhitelist from.', ephemeral: true })
     return
@@ -64,7 +64,7 @@ const unwhitelist = async function (interaction) {
 
   // Remove the address from the whitelist for the users address
   const whitelists = loadWhitelists()
-  if (!whitelists.has(address) || !whitelist.get(address).has(interaction.user.id)) {
+  if (!whitelists.has(address)) {
     interaction.reply({ content: `Not whitelisted the '${address}' address.`, ephemeral: true })
     return
   }
@@ -79,13 +79,7 @@ const unwhitelist = async function (interaction) {
 
 // Handle the 'seeWhitelist' command
 const seeWhitelist = async function (interaction) {
-  const whitelistedAddresses = []
-  const whitelists = loadWhitelists()
-  whitelists.forEach((users, address) => {
-    if (users.has(interaction.user.id)) {
-      whitelistedAddresses.push(address)
-    }
-  })
+  const whitelistedAddresses = getWhitelist(interaction.user.id)
 
   if (whitelistedAddresses.length === 0) {
     await interaction.reply({ content: 'You have not whitelisted any addresses.', ephemeral: true })
@@ -94,4 +88,16 @@ const seeWhitelist = async function (interaction) {
   }
 }
 
-module.exports = { unwhitelist, seeWhitelist, loadWhitelists, whitelist }
+// This function is also needed by the event-handler to see if a user has a whitelist or not.
+const getWhitelist = function(userId) {
+  const whitelistedAddresses = []
+  const whitelists = loadWhitelists()
+  whitelists.forEach((users, address) => {
+    if (users.has(userId)) {
+      whitelistedAddresses.push(address)
+    }
+  })
+  return whitelistedAddresses
+}
+
+module.exports = { unwhitelist, seeWhitelist, loadWhitelists, whitelist, getWhitelist }
