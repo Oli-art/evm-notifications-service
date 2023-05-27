@@ -1,6 +1,7 @@
 {
-  "main": "service.js",
-  "build": "webpack --mode production --config webpack.config.prod.js",
+  "scripts": {
+    "start": "node service.js"
+  },
   "dependencies": {
     "canvas": "^2.11.2",
     "crypto-js": "^4.1.1",
