@@ -1,11 +1,12 @@
 {
   "main": "service.js",
+  "build": "webpack --mode production --config webpack.config.prod.js",
   "dependencies": {
     "canvas": "^2.11.2",
     "crypto-js": "^4.1.1",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
-    "web3": "^1.10.0"
+    "web3-eth-abi": "^1.10.0"
   },
   "devDependencies": {
     "eslint": "^8.41.0",
