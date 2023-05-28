@@ -30,7 +30,6 @@ const isAddress = function (address) {
 const isChecksumAddress = function (address) {
   // Check each case
   address = address.replace('0x', '')
-  // const web3 = new Web3()
   const addressHash = sha3(address.toLowerCase())
   for (let i = 0; i < 40; i++) {
     // the nth letter should be uppercase if the nth digit of casemap is 1
