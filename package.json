@@ -1,4 +1,5 @@
 {
+  "main": "service.js",
   "dependencies": {
     "canvas": "^2.11.2",
     "crypto-js": "^4.1.1",
