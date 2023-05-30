@@ -1,7 +1,7 @@
 const { createCanvas } = require('canvas')
 const fs = require('fs')
 
-const blockies = async function(address) {
+const blockies = function(address) {
     // The random number is a js implementation of the Xorshift PRNG
     const randseed = new Array(4) // Xorshift: [x, y, z, w] 32 bit values
 
@@ -9,7 +9,7 @@ const blockies = async function(address) {
 
     const source = createIcon({ seed:seed ,size: 8, scale: 1}, randseed).toBuffer("image/png")
 
-    await fs.writeFileSync('./images/last-blockie.png', source)
+    fs.writeFileSync('./images/last-blockie.png', source)
 }
 
 function seedrand(seed, randseed) {

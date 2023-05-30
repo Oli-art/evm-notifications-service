@@ -2,7 +2,8 @@ const whitelistHandler = require('../databases/whitelists/handler')
 const mapAddressToIdHandler = require('../databases/mapAddressToId/handler')
 const { embedBuilder } = require('./utils')
 const { AttachmentBuilder } = require('discord.js')
-const blockies = require('./blockies')
+const blockies = require('../images/blockies')
+const generateQRCode = require('../images/qr-generator')
 
 // Handle incoming Discord events
 module.exports = async function directMessage (
@@ -11,7 +12,8 @@ module.exports = async function directMessage (
     subject,
     body,
     image,
-    receiver
+    receiver,
+    transactionRequest
   ) {
     const mapAddressToId = mapAddressToIdHandler.loadMapAddressToId()
   
@@ -23,15 +25,24 @@ module.exports = async function directMessage (
     await mapAddressToId.get(receiver).forEach(async (userId) => {
       const userWhitelist = whitelistHandler.getWhitelist(userId)
       // check if user has whitelisted the sender
-      console.log(userWhitelist)
-      console.log(sender.toLowerCase(), userWhitelist.length == 0)
       if (userWhitelist.includes(sender.toLowerCase()) || userWhitelist.length == 0 ) {
+        blockies(sender)
+        generateQRCode(transactionRequest)
+        const blockies_file = new AttachmentBuilder('./images/last-blockie.png')
+        const qr_code = new AttachmentBuilder('./images/last-qr-code.png')
         await discordClient.users
         .fetch(userId) // Fetch the user object using the user ID
         .then(async (user) => {
-          await blockies(sender)
-          const file = new AttachmentBuilder('./images/last-blockie.png')
-          await user.send({ embeds: [embedBuilder(subject, body, sender, image, receiver)], files: [file] }) // Send the notification as a DM to the user
+          await user.send({
+            embeds: [embedBuilder(
+              subject,
+              body,
+              sender,
+              image,
+              receiver,
+              transactionRequest
+            )],
+            files: [blockies_file, qr_code] }) // Send the notification as a DM to the user
         })
         .catch((error) => {
           console.error(`Failed to send notification to user with ID ${userId}. Error: ${error}`)
