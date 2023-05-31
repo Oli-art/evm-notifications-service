@@ -34,22 +34,45 @@ const hex2a = function (hex) {
   return str
 }
 
-const setBodyOptions = function(data) {
+const setDMBodyOptions = function(data) {
   let image = undefined
   let transactionRequest = undefined
-  // const attentionLevel = data[0][2]
+
   if (data[0].length > 3) {
+    // both image url and transaction request fields were provided.
+    image = hex2a(data[0][2])
+    transactionRequest = hex2a(data[0][3])
+  } else if (data[0].length > 2){
+    // either image url or transaction request fields were provided.
+    if (checkImageURL(data[0][2])) {
+      // an image url was provided
+      image = hex2a(data[0][2])
+    } else {
+      transactionRequest = hex2a(data[0][2])
+    }
+  }
+  return  { image, transactionRequest }
+}
+
+const setBroadcastBodyOptions = function(data) {
+  let image = undefined
+  let transactionRequest = undefined
+
+  if (data[0].length > 4) {
     // both image url and transaction request fields were provided.
     image = hex2a(data[0][3])
     transactionRequest = hex2a(data[0][4])
-  } else if (data[0].length > 2){
+  } else if (data[0].length > 3){
     // either image url or transaction request fields were provided.
     if (checkImageURL(data[0][3])) {
       // an image url was provided
+      image = hex2a(data[0][3])
+    } else {
+      // a transaction request was provided
       transactionRequest = hex2a(data[0][3])
     }
   }
   return  { image, transactionRequest }
 }
 
-module.exports = { hex2a, embedBuilder, checkImageURL, setBodyOptions }
+module.exports = { hex2a, embedBuilder, checkImageURL, setBroadcastBodyOptions, setDMBodyOptions }

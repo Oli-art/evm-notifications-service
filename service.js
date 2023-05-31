@@ -3,9 +3,12 @@
 const fs = require('fs')
 const path = require('path')
 const http = require('http')
+const { Mutex } = require('async-mutex')
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 const manageRequest = require('./event-handler/transaction-manager')
 require('dotenv').config()
+
+const mutex = new Mutex(); // a shared source of state between requests
 
 /* ################################## DISCORD SERVICE ################################## */
 
@@ -67,7 +70,10 @@ discordClient.on(Events.InteractionCreate, async interaction => {
     return
   }
   try {
-    await command.execute(interaction)
+    await mutex.runExclusive(async () => {
+      await command.execute(interaction)
+    });
+
   } catch (error) {
     console.error(error)
     if (interaction.replied || interaction.deferred) {
@@ -99,8 +105,9 @@ server.on('request', (req, res) => {
         const requestData = JSON.parse(body)
 
         // Handle the request data
-        manageRequest(requestData, discordClient)
-
+        await mutex.runExclusive(async () => {
+          manageRequest(requestData, discordClient)
+        })
         // Send a response
         res.statusCode = 200
         res.setHeader('Content-Type', 'application/json')

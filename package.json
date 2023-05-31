@@ -3,6 +3,7 @@
     "start": "node service.js"
   },
   "dependencies": {
+    "async-mutex": "^0.4.0",
     "canvas": "^2.11.2",
     "crypto-js": "^4.1.1",
     "discord.js": "^14.11.0",
