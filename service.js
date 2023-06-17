@@ -2,7 +2,7 @@
 /* eslint-disable brace-style */
 const fs = require('fs')
 const path = require('path')
-const http = require('http')
+const express = require('express');
 const { Mutex } = require('async-mutex')
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 const manageRequest = require('./event-handler/transaction-manager')
@@ -90,37 +90,25 @@ discordClient.on(Events.InteractionCreate, async interaction => {
 
 
 // Create an HTTP server (to receive transactions that contain notification events from Quicknode)
-const server = http.createServer()
+const server = express()
+server.use(express.json())
 
 // Handle incoming HTTP POST requests
-server.on('request', (req, res) => {
-  if (req.method === 'POST') {
-    let body = ''
-    req.on('data', (chunk) => {
-      body += chunk
+server.post('/', async (req, res) => {
+  try {
+    const requestData = req.body;
+
+    console.log(requestData);
+    // Handle the request data
+    await mutex.runExclusive(async () => {
+      manageRequest(requestData, discordClient)
     })
 
-    req.on('end', async () => {
-      try {
-        const requestData = JSON.parse(body)
-
-        // Handle the request data
-        await mutex.runExclusive(async () => {
-          manageRequest(requestData, discordClient)
-        })
-        // Send a response
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ message: 'Request handled successfully.' }))
-      } catch (error) {
-        console.error(`Failed to parse request body. Error: ${error}`)
-        res.statusCode = 400
-        res.end('Error parsing request body.')
-      }
-    })
-  } else {
-    res.statusCode = 404
-    res.end('Not Found')
+    // Send a response
+    res.status(200).json({ message: 'Request handled successfully.' })
+  } catch (error) {
+    console.error(`Failed to parse request body. Error: ${error}`)
+    res.status(400).send('Error parsing request body.');
   }
 })
 

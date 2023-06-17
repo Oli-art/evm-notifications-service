@@ -1,4 +1,24 @@
 const { EmbedBuilder } = require('discord.js')
+require('dotenv').config({ path: '.env.eip7017' });
+
+const checkScam = function(sender, receipt, methodHash) {
+  if (receipt.from.toLowerCase() === sender) {
+    // sender is a wallet.
+    const walletDMHash = process.env.WALLET_DM_HASH
+    const walletBroadcastHash =  process.env.WALLET_BROADCAST_HASH
+    if (methodHash != walletDMHash && methodHash != walletBroadcastHash) {
+      // this is a likely fraudulent event emmission, as the sender is the contract caller, but the method executed was not as EIP-7017 states.
+      console.log("LIKELY SCAMMY NOTIFICATION. RETURNING.")
+      return false
+    }
+  } else if (receipt.to != sender) {
+    // sender isn't a contract
+    // this is a fraudulent transaction, as the sender is neither the contract nor the contract caller.
+    console.log("SCAMMY NOTIFICATION. RETURNING.")
+    return false
+  }
+  return true // not a scam (:
+}
 
 const checkImageURL = function(url) {
   return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
@@ -75,4 +95,11 @@ const setBroadcastBodyOptions = function(data) {
   return  { image, transactionRequest }
 }
 
-module.exports = { hex2a, embedBuilder, checkImageURL, setBroadcastBodyOptions, setDMBodyOptions }
+module.exports = {
+  checkScam,
+  checkImageURL,
+  embedBuilder,
+  hex2a,
+  setBroadcastBodyOptions,
+  setDMBodyOptions
+}
