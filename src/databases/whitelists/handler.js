@@ -4,7 +4,7 @@ const { isAddress } = require('../utils')
 // Load the whitelists from the JSON file
 const loadWhitelists = function () {
   try {
-    const data = fs.readFileSync('./databases/whitelists/whitelists.json', 'utf8')
+    const data = fs.readFileSync('./src/databases/whitelists/whitelists.json', 'utf8')
     const entries = JSON.parse(data)
 
     // Convert arrays to sets
@@ -21,7 +21,7 @@ const loadWhitelists = function () {
 const saveWhitelists = function (whitelists) {
   try {
     const data = JSON.stringify(Array.from(whitelists.entries()).map(([address, userId]) => [address, Array.from(userId)]), null, 2)
-    fs.writeFileSync('./databases/whitelists/whitelists.json', data, 'utf8')
+    fs.writeFileSync('./src/databases/whitelists/whitelists.json', data, 'utf8')
     console.log('Whitelists saved successfully.')
   } catch (error) {
     console.error('Error saving whitelists:', error)

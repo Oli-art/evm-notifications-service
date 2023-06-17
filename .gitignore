@@ -20,3 +20,5 @@ node_modules
 .eslintrc.yml
 .eslintrc.json
 
+# generated images
+images/last-blockie.png

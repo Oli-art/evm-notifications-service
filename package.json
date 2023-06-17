@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node service.js"
+    "start": "node src/main.js"
   },
   "dependencies": {
     "async-mutex": "^0.4.0",

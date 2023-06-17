@@ -5,7 +5,9 @@ const path = require('path')
 const express = require('express');
 const { Mutex } = require('async-mutex')
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
+
 const manageRequest = require('./event-handler/transaction-manager')
+
 require('dotenv').config()
 
 const mutex = new Mutex(); // a shared source of state between requests
@@ -86,8 +88,6 @@ discordClient.on(Events.InteractionCreate, async interaction => {
 
 
 /* ################################## EVENT LISTENER ################################## */
-
-
 
 // Create an HTTP server (to receive transactions that contain notification events from Quicknode)
 const server = express()

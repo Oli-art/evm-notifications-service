@@ -1,8 +1,9 @@
-const handler = require('../databases/subscriptions/handler')
-const { embedBuilder } = require('./utils')
+const { embedBuilder } = require('../utils')
+
+const handler = require('../../databases/subscriptions/handler')
 const { AttachmentBuilder } = require('discord.js')
-const blockies = require('../images/blockies')
-const generateQRCode = require('../images/qr-generator')
+const blockies = require('../../images/blockies')
+const generateQRCode = require('../../images/qr-generator')
 
 // Handle incoming Discord events
 module.exports = async function broadcastMessage (
@@ -22,8 +23,8 @@ module.exports = async function broadcastMessage (
 
     blockies(sender)
     generateQRCode(transactionRequest)
-    const blockies_file = new AttachmentBuilder('./images/last-blockie.png')
-    const qr_code = new AttachmentBuilder('./images/last-qr-code.png')
+    const blockies_file = new AttachmentBuilder('./src/images/last-blockie.png')
+    const qr_code = new AttachmentBuilder('./src/images/last-qr-code.png')
   
     await subscriptions.get(sender).forEach(async (userId) => {
       await discordClient.users

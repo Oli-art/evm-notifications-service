@@ -4,7 +4,7 @@ const { isAddress } = require('../utils')
 // Load the subscriptions from the JSON file
 const loadSubscriptions = function () {
   try {
-    const data = fs.readFileSync('./databases/subscriptions/subscriptions.json', 'utf8')
+    const data = fs.readFileSync('./src/databases/subscriptions/subscriptions.json', 'utf8')
     const entries = JSON.parse(data)
 
     // Convert arrays to sets
@@ -21,7 +21,7 @@ const loadSubscriptions = function () {
 const saveSubscriptions = function (subscriptions) {
   try {
     const data = JSON.stringify(Array.from(subscriptions.entries()).map(([address, users]) => [address, Array.from(users)]), null, 2)
-    fs.writeFileSync('./databases/subscriptions/subscriptions.json', data, 'utf8')
+    fs.writeFileSync('./src/databases/subscriptions/subscriptions.json', data, 'utf8')
     console.log('Subscriptions saved successfully.')
   } catch (error) {
     console.error('Error saving subscriptions:', error)

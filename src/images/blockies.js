@@ -9,7 +9,7 @@ const blockies = function(address) {
 
     const source = createIcon({ seed:seed ,size: 8, scale: 1}, randseed).toBuffer("image/png")
 
-    fs.writeFileSync('./images/last-blockie.png', source)
+    fs.writeFileSync('./src/images/last-blockie.png', source)
 }
 
 function seedrand(seed, randseed) {

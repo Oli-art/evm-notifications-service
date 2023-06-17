@@ -4,7 +4,7 @@ const { isAddress } = require('../utils')
 // Load the map (eth address to discord id) from the JSON file
 const loadMapAddressToId = function () {
   try {
-    const data = fs.readFileSync('./databases/mapAddressToId/map_address_to_id.json', 'utf8')
+    const data = fs.readFileSync('./src/databases/mapAddressToId/map_address_to_id.json', 'utf8')
     const entries = JSON.parse(data)
 
     // Convert arrays to sets
@@ -21,7 +21,7 @@ const loadMapAddressToId = function () {
 const saveMapAddressToId = function (mapAddressToId) {
   try {
     const data = JSON.stringify(Array.from(mapAddressToId.entries()).map(([userAddress, id]) => [userAddress, Array.from(id)]), null, 2)
-    fs.writeFileSync('./databases/mapAddressToId/map_address_to_id.json', data, 'utf8')
+    fs.writeFileSync('./src/databases/mapAddressToId/map_address_to_id.json', data, 'utf8')
     console.log('mapAddressToId saved successfully.')
   } catch (error) {
     console.error('Error saving mapAddressToId:', error)

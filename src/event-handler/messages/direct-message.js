@@ -1,9 +1,10 @@
-const whitelistHandler = require('../databases/whitelists/handler')
-const mapAddressToIdHandler = require('../databases/mapAddressToId/handler')
-const { embedBuilder } = require('./utils')
 const { AttachmentBuilder } = require('discord.js')
-const blockies = require('../images/blockies')
-const generateQRCode = require('../images/qr-generator')
+
+const whitelistHandler = require('../../databases/whitelists/handler')
+const mapAddressToIdHandler = require('../../databases/mapAddressToId/handler')
+const { embedBuilder } = require('../utils')
+const blockies = require('../../images/blockies')
+const generateQRCode = require('../../images/qr-generator')
 
 // Handle incoming Discord events
 module.exports = async function directMessage (
@@ -28,8 +29,8 @@ module.exports = async function directMessage (
       if (userWhitelist.includes(sender.toLowerCase()) || userWhitelist.length == 0 ) {
         blockies(sender)
         generateQRCode(transactionRequest)
-        const blockies_file = new AttachmentBuilder('./images/last-blockie.png')
-        const qr_code = new AttachmentBuilder('./images/last-qr-code.png')
+        const blockies_file = new AttachmentBuilder('./src/images/last-blockie.png')
+        const qr_code = new AttachmentBuilder('./src/images/last-qr-code.png')
         await discordClient.users
         .fetch(userId) // Fetch the user object using the user ID
         .then(async (user) => {
